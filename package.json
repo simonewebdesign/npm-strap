@@ -18,7 +18,7 @@
     "watch:html": "onchange source/*.html -- npm run build:html",
     "watch:css": "onchange source/**/*.css -- npm run build:css",
     "watch:js": "onchange 'source/**/*.js' -- npm run build:js",
-    "watch": "parallelshell 'npm run server' 'npm run server:fixtures' 'npm run watch:html' 'npm run watch:css' 'npm run watch:js'",
+    "watch": "parallelshell 'npm run server' 'npm run watch:html' 'npm run watch:css' 'npm run watch:js'",
     "start": "npm run build && npm run watch",
     "test": "karma start --single-run --browsers PhantomJS --reporters dots",
     "lint": "eslint source/"
