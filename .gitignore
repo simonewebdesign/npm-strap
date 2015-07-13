@@ -1,0 +1,16 @@
+# External dependencies
+node_modules
+jspm_packages
+
+# The build target folder
+build
+
+# Log files
+npm-debug.log
+
+# JetBrain
+.idea
+
+# Karma (the test runner)
+coverage
+karma_html
