@@ -4,7 +4,30 @@
   "description": "An npm frontend project bootstrapper, using npm itself as a build tool.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "bootstrap": "npm i ; mkdir build && touch build/.keep",
+    "server": "http-server build/",
+    "clean": "rm -vrf build/*",
+
+    "build:html":      "cp source/*.html build/",
+    "build:html:prod": "htmlminify -o build/index.html source/index.html",
+    
+    "build:css":      "cat source/*.css source/components/*/*.css | postcss -u cssnext -u postcss-nested -o build/style.css",
+    "build:css:prod": "cat source/*.css source/components/*/*.css | postcss -u cssnext -u postcss-nested | cleancss -o build/style.css",
+    
+    "build:js":      "jspm bundle-sfx source/app build/app.js",
+    "build:js:prod": "jspm bundle-sfx --minify source/app build/app.js",
+    
+    "build":      "npm run build:html && npm run build:css && npm run build:js",
+    "build:prod": "npm run build:html:prod && npm run build:css:prod && npm run build:js:prod",
+    
+    "watch:html": "onchange source/*.html -- npm run build:html",
+    "watch:css":  "onchange source/**/*.css -- npm run build:css",
+    "watch:js":   "onchange 'source/**/*.js' -- npm run build:js",
+    "watch":      "parallelshell 'npm run server' 'npm run server:fixtures' 'npm run watch:html' 'npm run watch:css' 'npm run watch:js'",
+    
+    "start": "npm run build && npm run watch",
+    "test": "karma start --single-run --browsers PhantomJS --reporters dots",
+    "lint": "eslint source/"
   },
   "repository": {
     "type": "git",
