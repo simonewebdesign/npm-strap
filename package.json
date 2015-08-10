@@ -1,7 +1,7 @@
 {
-  "name": "npm-strap",
+  "name": "pagejsdemo",
   "version": "0.0.1",
-  "description": "An npm frontend project bootstrapper, using npm itself as a build tool.",
+  "description": "",
   "main": "index.js",
   "config": {
     "source_dir": "source",
@@ -30,22 +30,8 @@
     "test": "karma start --single-run --browsers PhantomJS --reporters dots",
     "lint": "eslint $npm_package_config_source_dir"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/simonewebdesign/npm-strap.git"
-  },
-  "keywords": [
-    "npm",
-    "frontend",
-    "build",
-    "bootstrap"
-  ],
   "author": "Simone Vittori",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/simonewebdesign/npm-strap/issues"
-  },
-  "homepage": "https://github.com/simonewebdesign/npm-strap#readme",
   "devDependencies": {
     "clean-css": "^3.3.5",
     "cssnext": "^1.8.0",
@@ -61,9 +47,13 @@
   },
   "jspm": {
     "directories": {},
+    "dependencies": {
+      "page": "npm:page@^1.6.3"
+    },
     "devDependencies": {
-      "traceur": "github:jmcriffey/bower-traceur@0.0.88",
-      "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.88"
+      "babel": "npm:babel-core@^5.1.13",
+      "babel-runtime": "npm:babel-runtime@^5.1.13",
+      "core-js": "npm:core-js@^0.9.4"
     }
   }
 }
