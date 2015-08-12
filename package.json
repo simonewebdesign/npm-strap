@@ -8,34 +8,42 @@
     "build_dir": "build"
   },
   "scripts": {
-    "deps:get": "npm i && jspm i",
-    "server": "http-server $npm_package_config_build_dir/",
-    "clean": "rm -vrf $npm_package_config_build_dir/*",
-    "prebuild:html": "mkdir -p $npm_package_config_build_dir",
-    "prebuild:html:prod": "npm run prebuild:html",
-    "build:html": "cp $npm_package_config_source_dir/*.html $npm_package_config_build_dir/",
-    "build:html:prod": "htmlminify -o $npm_package_config_build_dir/index.html $npm_package_config_source_dir/index.html",
-    "build:css": "cat $npm_package_config_source_dir/*.css $npm_package_config_source_dir/components/*/*.css | postcss -u cssnext -u postcss-nested -o $npm_package_config_build_dir/style.css",
-    "build:css:prod": "cat $npm_package_config_source_dir/*.css $npm_package_config_source_dir/components/*/*.css | postcss -u cssnext -u postcss-nested | cleancss -o $npm_package_config_build_dir/style.css",
-    "build:js": "jspm bundle-sfx $npm_package_config_source_dir/app $npm_package_config_build_dir/app.js",
-    "build:js:prod": "jspm bundle-sfx --minify $npm_package_config_source_dir/app $npm_package_config_build_dir/app.js",
-    "prebuild:prod": "npm run prebuild",
-    "build": "npm run build:html && npm run build:css && npm run build:js",
-    "build:prod": "npm run build:html:prod && npm run build:css:prod && npm run build:js:prod",
-    "watch:html": "onchange $npm_package_config_source_dir/*.html -- npm run build:html",
-    "watch:css": "onchange $npm_package_config_source_dir/**/*.css -- npm run build:css",
-    "watch:js": "onchange '$npm_package_config_source_dir/**/*.js' -- npm run build:js",
-    "watch": "parallelshell 'npm run server' 'npm run watch:html' 'npm run watch:css' 'npm run watch:js'",
+    "deps:get": "npm install && jspm install",
+
+    "build:images":      "cp source/*.png build/ ; exit 0",
+
+    "build:html":      "cp source/*.html build/",
+
+    "build:css":      "cp source/*.css build/",
+
+    "build:js":      "jspm bundle-sfx source/app build/app.js",
+
+    "clean": "rm -Rf build ; mkdir -p build",
+
+    "prebuild":      "npm run clean",
+
+    "build":      "npm run build:js      && npm run build:css      && npm run build:html      && npm run build:images",
+
+    "symlink": "ln -s ../source/ build/source && ln -s ../jspm_packages build/jspm_packages",
+
+    "postbuild":      "npm run symlink",
+
+    "watch:html": "onchange source/*.html -- npm run build:html",
+    "watch:css":  "onchange source/**/*.css -- npm run build:css",
+    "watch:js":   "onchange 'source/**/*.js' -- npm run build:js",
+    "watch": "parallelshell 'npm run watch:html' 'npm run watch:css' 'npm run watch:js' 'npm run server'",
+
+    "server": "http-server build/ -o",
     "start": "npm run build && npm run watch",
-    "test": "karma start --single-run --browsers PhantomJS --reporters dots",
-    "lint": "eslint $npm_package_config_source_dir"
+    "lint": "eslint source ; exit 0"
   },
   "author": "Simone Vittori",
   "license": "MIT",
   "devDependencies": {
     "clean-css": "^3.3.5",
     "cssnext": "^1.8.0",
-    "eslint": "^0.24.1",
+    "eslint": "^1.1.0",
+    "eslint-plugin-react": "^3.2.1",
     "html-minify": "^0.3.1",
     "http-server": "^0.8.0",
     "jspm": "^0.15.7",
@@ -48,7 +56,8 @@
   "jspm": {
     "directories": {},
     "dependencies": {
-      "page": "npm:page@^1.6.3"
+      "page": "npm:page@^1.6.3",
+      "react": "npm:react@0.13.3"
     },
     "devDependencies": {
       "babel": "npm:babel-core@^5.1.13",
