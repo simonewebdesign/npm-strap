@@ -1,14 +1,7 @@
 import React from 'react';
 import page from 'page';
 
-// pages
-import HomePage      from './pages/home';
-import UsersPage     from './pages/users/index';
-import UserShowPage  from './pages/users/show';
-import NotFoundPage  from './pages/not-found';
-
 export default class Router extends React.Component {
-
   // Since we are going to deal with routes inside componentDidMount the initial
   // load of our component won't have this.state.component yet, so let's set a
   // default value for that.
@@ -20,20 +13,12 @@ export default class Router extends React.Component {
   componentDidMount() {
     let self = this;
 
-    page('/', ctx => {
-      self.setState({component: <HomePage params={ctx.params} />});
-    });
+    this.props.routes.forEach(route => {
+      let [url, Comp] = route;
 
-    page('/users', ctx => {
-      self.setState({component: <UsersPage params={ctx.params} />});
-    });
-
-    page('/users/:id', ctx => {
-      self.setState({component: <UserShowPage params={ctx.params} />});
-    });
-
-    page('*', ctx => {
-      self.setState({component: <NotFoundPage params={ctx.params} />});
+      page(url, ctx => {
+        self.setState({component: <Comp params={ctx.params} querystring={ctx.querystring} />});
+      });
     });
 
     page();
